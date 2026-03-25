@@ -11,6 +11,8 @@ services:
       - ./backend/src:/var/www/html
     depends_on:
       - postgres
+    networks:               
+    - app-network
   vue:
     build:
       context: ./frontend
