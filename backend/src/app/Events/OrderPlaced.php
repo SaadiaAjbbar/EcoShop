@@ -22,4 +22,6 @@ class OrderPlaced
     {
         $this->order = $order;
     }
+
+   
 }

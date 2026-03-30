@@ -4,9 +4,34 @@ use App\Http\Controllers\Controller;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
+use OpenApi\Attributes as OA;
 
 class AuthController extends Controller
 {
+    #[OA\Post(
+        path: "/register",
+        summary: "Register a new user",
+        tags: ["Authentication"],
+        requestBody: new OA\RequestBody(
+            content: new OA\MediaType(
+                mediaType: "application/json",
+                schema: new OA\Schema(
+                    properties: [
+                        new OA\Property(property: "name", type: "string", example: "John Doe"),
+                        new OA\Property(property: "email", type: "string", example: "john@example.com"),
+                        new OA\Property(property: "password", type: "string", example: "password")
+                    ]
+                )
+            )
+        ),
+        responses: [
+            new OA\Response(
+                response: 201,
+                description: "User registered successfully"
+            )
+        ]
+    )]
+
     public function register(Request $request)
     {
         $user = User::create([
@@ -25,6 +50,29 @@ class AuthController extends Controller
             'user' => $user
         ]);
     }
+
+    #[OA\Post(
+        path: "/login",
+        summary: "Login a user",
+        tags: ["Authentication"],
+        requestBody: new OA\RequestBody(
+            content: new OA\MediaType(
+                mediaType: "application/json",
+                schema: new OA\Schema(
+                    properties: [
+                        new OA\Property(property: "email", type: "string", example: "john@example.com"),
+                        new OA\Property(property: "password", type: "string", example: "password")
+                    ]
+                )
+            )
+        ),
+        responses: [
+            new OA\Response(
+                response: 200,
+                description: "User logged in successfully"
+            )
+        ]
+    )]
 
     public function login(Request $request)
     {
